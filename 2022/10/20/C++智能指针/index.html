@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C++智能指针 | mhduiy</title><meta name="author" content="艾洋"><meta name="copyright" content="艾洋"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="c++有两种指针：原始指针和智能指针 智能指针是原始指针的封装，优点是会自动的分配内存，不用担心潜在的内存泄露 关于智能指针在c++11中通过引用智能指针的概念，使得程序员不需要手动释放内存 智能指针的种类  std::unique_ptr std::shared_ptr std::weak_ptr  注意  std::auto_ptr已经被废弃  智能指针和原始指针  并不是所有的指针都可以封装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++智能指针">
+<meta property="og:url" content="http://mhduiy.top/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="mhduiy">
+<meta property="og:description" content="c++有两种指针：原始指针和智能指针 智能指针是原始指针的封装，优点是会自动的分配内存，不用担心潜在的内存泄露 关于智能指针在c++11中通过引用智能指针的概念，使得程序员不需要手动释放内存 智能指针的种类  std::unique_ptr std::shared_ptr std::weak_ptr  注意  std::auto_ptr已经被废弃  智能指针和原始指针  并不是所有的指针都可以封装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png">
+<meta property="article:published_time" content="2022-10-19T17:16:30.000Z">
+<meta property="article:modified_time" content="2022-10-20T07:11:10.488Z">
+<meta property="article:author" content="艾洋">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://mhduiy.top/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":80,"languages":{"author":"作者: 艾洋","link":"链接: ","source":"来源: mhduiy","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++智能指针',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-20 15:11:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/1666233354606.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mhduiy</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++智能指针</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-20T07:11:10.488Z" title="更新于 2022-10-20 15:11:10">2022-10-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++智能指针"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>c++有两种指针：原始指针和智能指针 智能指针是原始指针的封装，优点是会自动的分配内存，不用担心潜在的内存泄露</p>
+<h2 id="关于智能指针"><a href="#关于智能指针" class="headerlink" title="关于智能指针"></a>关于智能指针</h2><p>在c++11中通过引用智能指针的概念，使得程序员不需要手动释放内存</p>
+<p>智能指针的种类</p>
+<ul>
+<li>std::unique_ptr</li>
+<li>std::shared_ptr</li>
+<li>std::weak_ptr</li>
+</ul>
+<p>注意</p>
+<ul>
+<li>std::auto_ptr已经被废弃</li>
+</ul>
+<p>智能指针和原始指针</p>
+<ul>
+<li>并不是所有的指针都可以封装为指针指针，有的时候原始指针比智能指针更加方便</li>
+<li>最常用的是裸指针，其次是unique_ptr和shared_ptr</li>
+<li>weak_ptr是shared_ptr的一个补充，应用场景比较少</li>
+<li>智能指针只是解决了一部分问题，没有从根本上解决C++内存安全的问题，不加以使用依然会造成内存安全的问题</li>
+</ul>
+<h2 id="独占指针：unique-ptr"><a href="#独占指针：unique-ptr" class="headerlink" title="独占指针：unique_ptr"></a>独占指针：unique_ptr</h2><ul>
+<li>用得最多的一个</li>
+<li>在任何给定的时刻，只能有一个指针释放内存</li>
+<li>当指针超过作用域后，内存将会自动释放</li>
+<li>该类型指针不能copy只能move</li>
+</ul>
+<h4 id="三种创建方式"><a href="#三种创建方式" class="headerlink" title="三种创建方式"></a>三种创建方式</h4><ul>
+<li>通过已用的裸指针进行创建：建议将裸指针置空消除掉</li>
+<li>通过new创建</li>
+<li>std::make_unique创建(推荐)</li>
+</ul>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>unique_ptr可以通过get()获取地址</li>
+<li>实现了→和*</li>
+</ul>
+<h4 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h4><p>cat.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CAT_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CAT_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Cat</span>(std::string name);</span><br><span class="line">    <span class="built_in">Cat</span>() = <span class="keyword">default</span>;</span><br><span class="line">    ~<span class="built_in">Cat</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-&gt;</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">cat_info</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;cat info name&quot;</span> &lt;&lt; name &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">get_name</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">set_cat_name</span><span class="params">(<span class="type">const</span> std::string &amp;name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;name = name;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string name&#123;<span class="string">&quot;Mimi&quot;</span>&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>cat.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">Cat::<span class="built_in">Cat</span>(std::string name):<span class="built_in">name</span>(name) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;constructor of Cat :&quot;</span> &lt;&lt; name &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Cat::~<span class="built_in">Cat</span>() &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Destructor of Cat :&quot;</span> &lt;&lt; name &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>裸指针：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Cat c1(&quot;OK&quot;);</span></span><br><span class="line">    <span class="comment">// c1.cat_info();</span></span><br><span class="line">    <span class="comment">// &#123;</span></span><br><span class="line">    <span class="comment">//     Cat c1(&quot;OK&quot;);</span></span><br><span class="line">    <span class="comment">//     c1.cat_info();</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//row point 裸指针</span></span><br><span class="line">    Cat *c_p1 = <span class="keyword">new</span> <span class="built_in">Cat</span>(<span class="string">&quot;YY&quot;</span>);</span><br><span class="line">    c_p1-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    &#123;<span class="comment">//加入到局部作用域</span></span><br><span class="line">        Cat *c_p1 = <span class="keyword">new</span> <span class="built_in">Cat</span>(<span class="string">&quot;YY&quot;</span>);</span><br><span class="line">        c_p1-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">        <span class="keyword">delete</span> c_p1;    <span class="comment">//加入delete语句之前不会被自动析构</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;---- yz ----&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">constructor of Cat :YY</span><br><span class="line">cat info nameYY</span><br><span class="line">constructor of Cat :YY</span><br><span class="line">cat info nameYY</span><br><span class="line">Destructor of Cat :YY</span><br><span class="line">---- yz ----</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1.通过裸指针初始化</span></span><br><span class="line">    <span class="comment">//建议销毁原指针，否则操作原指针的时候也在操作独占指针，这个时候独占指针不在独占，也是不安全的</span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> 0</span></span><br><span class="line">    Cat *c_p1 = <span class="keyword">new</span> <span class="built_in">Cat</span>(<span class="string">&quot;yz&quot;</span>);</span><br><span class="line">    <span class="function">unique_ptr&lt;Cat&gt; <span class="title">u_c_p1</span><span class="params">(c_p1)</span></span>;</span><br><span class="line">    <span class="comment">// delete c_p1;</span></span><br><span class="line">    <span class="comment">// c_p1=nullptr;</span></span><br><span class="line">    c_p1-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    u_c_p1-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    c_p1-&gt;<span class="built_in">set_cat_name</span>(<span class="string">&quot;OK&quot;</span>);</span><br><span class="line">    u_c_p1-&gt;<span class="built_in">cat_info</span>();<span class="comment">//同样被改变成OK了</span></span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.通过new来创建unique_ptr</span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> 0</span></span><br><span class="line">    <span class="function">unique_ptr&lt;Cat&gt; <span class="title">u_c_p2</span> <span class="params">(<span class="keyword">new</span> Cat(<span class="string">&quot;DD&quot;</span>))</span></span>;</span><br><span class="line">    u_c_p2-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.(推荐) std::make_unique来创建</span></span><br><span class="line"></span><br><span class="line">    unique_ptr&lt;Cat&gt; u_c_p3 = <span class="built_in">make_unique</span>&lt;Cat&gt;();</span><br><span class="line">    u_c_p3-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;cat address&quot;</span> &lt;&lt; u_c_p3.<span class="built_in">get</span>() &lt;&lt;  (*u_c_p3).<span class="built_in">get_name</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;  <span class="string">&quot;---- yz ----&quot;</span> &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="unique-ptr与函数调用"><a href="#unique-ptr与函数调用" class="headerlink" title="unique_ptr与函数调用"></a>unique_ptr与函数调用</h3><ul>
+<li>unique_ptr不能给copy只能move</li>
+<li>在做函数参数或是返回值的中一定要注意所有权</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">do_with_cat_pass_value</span><span class="params">(std::unique_ptr&lt;Cat&gt; c)</span> </span>&#123;</span><br><span class="line">    c-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">do_with_cat_pass_ref</span><span class="params">(<span class="type">const</span> std::unique_ptr&lt;Cat&gt; &amp;c)</span> </span>&#123; <span class="comment">//加const 不允许修改指向</span></span><br><span class="line">    c-&gt;<span class="built_in">set_cat_name</span>(<span class="string">&quot;coco&quot;</span>);</span><br><span class="line">    c-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    <span class="comment">// c.reset();//清空指针</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">unique_ptr&lt;Cat&gt; <span class="title">get_unique_ptr</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    unique_ptr&lt;Cat&gt; p_dog = <span class="built_in">make_unique</span>&lt;Cat&gt;(<span class="string">&quot;local dog&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> p_dog;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1.传值</span></span><br><span class="line">    std::unique_ptr&lt;Cat&gt; c1 = <span class="built_in">make_unique</span>&lt;Cat&gt;(<span class="string">&quot;ff&quot;</span>);</span><br><span class="line">    <span class="built_in">do_with_cat_pass_value</span>(std::<span class="built_in">move</span>(c1));</span><br><span class="line">    <span class="comment">//c1-&gt;cat_info(); // 不能调用</span></span><br><span class="line">    <span class="built_in">do_with_cat_pass_value</span>(<span class="built_in">make_unique</span>&lt;Cat&gt;(<span class="string">&quot;sjs&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.传引用</span></span><br><span class="line">    std::unique_ptr&lt;Cat&gt; c2 = <span class="built_in">make_unique</span>&lt;Cat&gt;(<span class="string">&quot;ss&quot;</span>);</span><br><span class="line">    <span class="built_in">do_with_cat_pass_ref</span>(c2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//链式</span></span><br><span class="line">    <span class="built_in">get_unique_ptr</span>()-&gt;<span class="built_in">cat_info</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="传值"><a href="#传值" class="headerlink" title="传值"></a>传值</h4><ul>
+<li>需要使用std::move来转移内存的使用权</li>
+<li>参数如果直接传入std::make_unique语句 自动转换为move</li>
+</ul>
+<h4 id="传引用"><a href="#传引用" class="headerlink" title="传引用"></a>传引用</h4><ul>
+<li>参数如果为const则不能改变指向</li>
+</ul>
+<h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><ul>
+<li>指向一个本地对象</li>
+<li>可以用做链式函数</li>
+</ul>
+<h2 id="计数指针：shared-ptr"><a href="#计数指针：shared-ptr" class="headerlink" title="计数指针：shared_ptr"></a>计数指针：shared_ptr</h2><ul>
+<li>shared_ptr创建了一个计数器与类对象所指的内存相关联</li>
+<li>copy计数器加一，销毁计数器减一</li>
+<li>所有指向同一内存的共享指针最后只消毁一次堆内存，因为堆内存只分配了一次，所有的共享指针（计数指针）都维护的同一块堆内存</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//常量类型</span></span><br><span class="line">    shared_ptr&lt;<span class="type">int</span>&gt;ip1 = <span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Value: &quot;</span> &lt;&lt; *ip1 &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//copy</span></span><br><span class="line">    shared_ptr&lt;<span class="type">int</span>&gt; ip2 = ip1;</span><br><span class="line">    *ip2 = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">    shared_ptr&lt;<span class="type">int</span>&gt;ip3 = ip1;</span><br><span class="line">    ip2 = <span class="literal">nullptr</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;count1: &quot;</span> &lt;&lt; ip1.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">//输出2，因为其中一个已经被释放</span></span><br><span class="line">    <span class="comment">//自定义类型</span></span><br><span class="line">    shared_ptr&lt;Cat&gt; cp4 = <span class="built_in">make_shared</span>&lt;Cat&gt;(<span class="string">&quot;xiaomao&quot;</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;cp4 count&quot;</span> &lt;&lt; cp4.<span class="built_in">use_count</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无论有多少计数指针指向堆内存，最后都只销毁一次 <strong><code>销毁条件：</code></strong> 计数器为0 的时候就销毁</p>
+<h3 id="shared-ptr-与函数"><a href="#shared-ptr-与函数" class="headerlink" title="shared_ptr 与函数"></a>shared_ptr 与函数</h3><ul>
+<li>传参进入函数之后，虽然变量是两个，但是指向的是同一块内存，改变其中之一，另外一个也会随着发生改变</li>
+</ul>
+<h4 id="举例：-1"><a href="#举例：-1" class="headerlink" title="举例："></a>举例：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">cat_by_value</span><span class="params">(shared_ptr&lt;Cat&gt; cat)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; cat-&gt;<span class="built_in">get_name</span>() &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;fuc Use count&quot;</span> &lt;&lt; cat.<span class="built_in">use_count</span>() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">cat_by_ref</span><span class="params">(shared_ptr&lt;Cat&gt; cat)</span> </span>&#123; <span class="comment">//如果加上const修饰就无法使用reset</span></span><br><span class="line">    cout &lt;&lt; cat-&gt;<span class="built_in">get_name</span>() &lt;&lt; endl;</span><br><span class="line">    cat.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in">Cat</span>());</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;fuc Use count&quot;</span> &lt;&lt; cat.<span class="built_in">use_count</span>() &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    shared_ptr&lt;Cat&gt; c1 = <span class="built_in">make_shared</span>&lt;Cat&gt;(<span class="string">&quot;dd&quot;</span>); </span><br><span class="line">    <span class="built_in">cat_by_value</span>(c1);<span class="comment">//传参进入后，计数器会加一，出函数后又会减一，所以这个use_count是1，函数里的use_count是2</span></span><br><span class="line">    <span class="built_in">cat_by_ref</span>(c1);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="shared-ptr与unique-ptr"><a href="#shared-ptr与unique-ptr" class="headerlink" title="shared_ptr与unique_ptr"></a>shared_ptr与unique_ptr</h2><ul>
+<li>不能将shared_ptr转换为weak_ptr</li>
+<li>建议将函数返回值为unique_ptr，随时可以改变为shared_ptr提高代码的复用率</li>
+</ul>
+<h4 id="举例：-2"><a href="#举例：-2" class="headerlink" title="举例："></a>举例：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cat.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    unique_ptr&lt;Cat&gt; cp1 = <span class="built_in">make_unique</span>&lt;Cat&gt;(<span class="string">&quot;dd&quot;</span>);</span><br><span class="line">    shared_ptr&lt;Cat&gt; cp2 = <span class="built_in">move</span>(cp1);    <span class="comment">//所有权转移</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; cp2.<span class="built_in">use_count</span>() &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>循环依赖问题：？？？需要使用weak_ptr</p>
+<ul>
+<li>weak_ptr可以通过lock()函数提升为shared_ptr</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://mhduiy.top">艾洋</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://mhduiy.top/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">http://mhduiy.top/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://mhduiy.top" target="_blank">mhduiy</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/20/C++%E4%B9%8Bcmake/"><img class="prev-cover" src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">之cmake</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/20/C++%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4/"><img class="next-cover" src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++编译命令</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/1666233354606.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">艾洋</div><div class="author-info__description">艾洋的小站</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">关于智能指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8B%AC%E5%8D%A0%E6%8C%87%E9%92%88%EF%BC%9Aunique-ptr"><span class="toc-number">2.</span> <span class="toc-text">独占指针：unique_ptr</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">2.0.1.</span> <span class="toc-text">三种创建方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-number">2.0.2.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="toc-number">2.0.3.</span> <span class="toc-text">举例：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#unique-ptr%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">unique_ptr与函数调用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%A0%E5%80%BC"><span class="toc-number">2.1.1.</span> <span class="toc-text">传值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%A0%E5%BC%95%E7%94%A8"><span class="toc-number">2.1.2.</span> <span class="toc-text">传引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">2.1.3.</span> <span class="toc-text">返回值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E6%95%B0%E6%8C%87%E9%92%88%EF%BC%9Ashared-ptr"><span class="toc-number">3.</span> <span class="toc-text">计数指针：shared_ptr</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-ptr-%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">shared_ptr 与函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A-1"><span class="toc-number">3.1.1.</span> <span class="toc-text">举例：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shared-ptr%E4%B8%8Eunique-ptr"><span class="toc-number">4.</span> <span class="toc-text">shared_ptr与unique_ptr</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A-2"><span class="toc-number">4.0.1.</span> <span class="toc-text">举例：</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/C++%E4%B9%8BSTL%E5%AE%B9%E5%99%A8/" title="C++之STL容器"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++之STL容器"/></a><div class="content"><a class="title" href="/2022/10/20/C++%E4%B9%8BSTL%E5%AE%B9%E5%99%A8/" title="C++之STL容器">C++之STL容器</a><time datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/C++%E4%B9%8Bcmake/" title="之cmake"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="之cmake"/></a><div class="content"><a class="title" href="/2022/10/20/C++%E4%B9%8Bcmake/" title="之cmake">之cmake</a><time datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="C++智能指针"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++智能指针"/></a><div class="content"><a class="title" href="/2022/10/20/C++%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="C++智能指针">C++智能指针</a><time datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/C++%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4/" title="C++编译命令"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++编译命令"/></a><div class="content"><a class="title" href="/2022/10/20/C++%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4/" title="C++编译命令">C++编译命令</a><time datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/SQL%E8%AF%AD%E5%8F%A5/" title="SQL语句"><img src="https://mhduiy-1310556463.cos.ap-chongqing.myqcloud.com/img/a5f37c547f455c6c3de14177dc90a745.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQL语句"/></a><div class="content"><a class="title" href="/2022/10/20/SQL%E8%AF%AD%E5%8F%A5/" title="SQL语句">SQL语句</a><time datetime="2022-10-19T17:16:30.000Z" title="发表于 2022-10-20 01:16:30">2022-10-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 艾洋</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '4efce218d0e44b2dcc84',
+      clientSecret: '67e6d876bee867fdc43bb0e90457d4985b41fc67',
+      repo: 'mhduiy.github.io',
+      owner: 'mhduiy',
+      admin: ['mhduiy'],
+      id: '81a0e6ed6f6e7de0e462b69709aafe72',
+      updateCountCallback: commentCount
+    },"mhduiy"))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7}});</script></body></html>
